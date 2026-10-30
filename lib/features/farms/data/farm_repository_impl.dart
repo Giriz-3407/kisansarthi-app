@@ -98,4 +98,24 @@ class FarmRepositoryImpl implements FarmRepository {
     });
     await _dio.post('/farms/$farmId/image', data: formData);
   }
+
+  @override
+  Future<Map<String, dynamic>> getLiveSensorData(int farmId, {int samples = 5}) async {
+    try {
+      final response = await _dio.get('/farms/$farmId/live-sensor-data', queryParameters: {
+        'samples': samples,
+      });
+      if (response.data is Map<String, dynamic>) {
+        return response.data as Map<String, dynamic>;
+      }
+      return {'status': 'success', 'data': response.data};
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data is Map) {
+        final data = e.response!.data as Map;
+        final msg = data['message']?.toString() ?? 'Failed to fetch live sensor data';
+        throw Exception(msg);
+      }
+      rethrow;
+    }
+  }
 }

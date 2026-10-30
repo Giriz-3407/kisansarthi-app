@@ -44,9 +44,19 @@ class ConnectionNotifier extends StateNotifier<ConnectionState> {
     state = ConnectionState(status: ConnectionStatus.connecting, currentIp: ip);
     
     try {
-      String testUrl = ip;
-      if (!testUrl.startsWith('http')) testUrl = 'http://$testUrl';
-      if (!testUrl.contains(':5000')) testUrl = '$testUrl:5000';
+      String testUrl = ip.trim();
+      if (!testUrl.startsWith('http://') && !testUrl.startsWith('https://')) {
+        testUrl = 'http://$testUrl';
+      }
+      while (testUrl.endsWith('/')) {
+        testUrl = testUrl.substring(0, testUrl.length - 1);
+      }
+      if (testUrl.endsWith('/api/v1')) {
+        testUrl = testUrl.substring(0, testUrl.length - 7);
+      }
+      if (!RegExp(r':\d+$').hasMatch(testUrl)) {
+        testUrl = '$testUrl:5000';
+      }
       
       dev.log('Testing connection to: $testUrl', name: 'ConnectionNotifier');
       

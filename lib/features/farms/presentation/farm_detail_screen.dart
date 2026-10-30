@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kisansarthi/core/network/image_url.dart';
 import 'package:kisansarthi/features/farms/presentation/farm_detail_notifier.dart';
 import 'package:kisansarthi/features/farms/presentation/farms_notifier.dart';
+import 'package:kisansarthi/features/farms/presentation/widgets/live_sensor_card.dart';
 
 class FarmDetailScreen extends ConsumerWidget {
   final int farmId;
@@ -108,6 +109,10 @@ class FarmDetailScreen extends ConsumerWidget {
                 loading: () => const LinearProgressIndicator(),
                 error: (err, _) => Center(child: Text('Error: $err')),
               ),
+
+              // Live IoT Sensor Telemetry Card
+              LiveSensorCard(farmId: farmId),
+
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Divider(),

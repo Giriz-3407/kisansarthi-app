@@ -8,4 +8,5 @@ abstract class FarmRepository {
   Future<Farm> updateFarm(int id, String name, {String? location, String? address});
   Future<void> deleteFarm(int id);
   Future<void> uploadFarmImage(int farmId, File imageFile);
+  Future<Map<String, dynamic>> getLiveSensorData(int farmId, {int samples = 5});
 }

@@ -31,18 +31,40 @@ class _ServerConfigDialogState extends ConsumerState<ServerConfigDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Enter Laptop IP Address:'),
+          const Text('Enter Server IP Address:'),
           const SizedBox(height: 8),
           TextField(
             controller: _controller,
             decoration: const InputDecoration(
-              hintText: 'e.g. 192.168.1.5',
+              hintText: '127.0.0.1, 10.0.2.2, or LAN IP',
               border: OutlineInputBorder(),
               prefixText: 'http://',
               suffixText: ':5000',
             ),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.text,
             enabled: !isConnecting,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              ActionChip(
+                avatar: const Icon(Icons.computer, size: 16),
+                label: const Text('Localhost'),
+                onPressed: isConnecting ? null : () => _controller.text = '127.0.0.1',
+              ),
+              ActionChip(
+                avatar: const Icon(Icons.phone_android, size: 16),
+                label: const Text('Emulator'),
+                onPressed: isConnecting ? null : () => _controller.text = '10.0.2.2',
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            '• Same PC or USB (adb reverse): 127.0.0.1\n• Android Emulator: 10.0.2.2\n• Phone on Wi-Fi: PC IP (192.168.x.x)',
+            style: TextStyle(fontSize: 11, color: Colors.grey),
           ),
           if (connectionState.message != null) ...[
             const SizedBox(height: 12),
